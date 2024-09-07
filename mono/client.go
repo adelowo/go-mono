@@ -50,7 +50,8 @@ type Client struct {
 	userAgent  string
 	apikey     string
 
-	Account *AccountService
+	Account       *AccountService
+	Authorisation *AuthorisationService
 }
 
 func New(opts ...Option) (*Client, error) {
@@ -75,6 +76,7 @@ func New(opts ...Option) (*Client, error) {
 	srv := &service{client: c}
 
 	c.Account = (*AccountService)(srv)
+	c.Authorisation = (*AuthorisationService)(srv)
 
 	return c, nil
 }
