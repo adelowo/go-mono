@@ -52,6 +52,7 @@ type Client struct {
 
 	Account       *AccountService
 	Authorisation *AuthorisationService
+	Transaction   *TransactionService
 }
 
 func New(opts ...Option) (*Client, error) {
@@ -77,6 +78,7 @@ func New(opts ...Option) (*Client, error) {
 
 	c.Account = (*AccountService)(srv)
 	c.Authorisation = (*AuthorisationService)(srv)
+	c.Transaction = (*TransactionService)(srv)
 
 	return c, nil
 }
