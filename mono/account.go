@@ -2,6 +2,7 @@ package mono
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"time"
 )
@@ -46,7 +47,9 @@ func (a *AccountService) Details(ctx context.Context,
 		return resp, err
 	}
 
-	req, err := a.client.newRequest(http.MethodGet, "/providers", body)
+	req, err := a.client.newRequest(http.MethodGet,
+		fmt.Sprintf("/accounts/%s", accountID),
+		body)
 	if err != nil {
 		return resp, err
 	}
