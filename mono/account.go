@@ -119,6 +119,6 @@ func (a *AccountService) Balance(ctx context.Context,
 		} `json:"data,omitempty"`
 	}
 
-	_, err = a.client.Do(ctx, req, response)
+	_, err = a.client.Do(ctx, req, &response)
 	return response.Data.Balance, err
 }

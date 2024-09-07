@@ -21,11 +21,12 @@ type TransactionService service
 type TransactionType string
 
 type TransactionsFilter struct {
-	Paginate   bool            `url:"paginate,omitempty"`
-	Start, End string          `url:"start,omitempty"`
-	Narration  string          `url:"narration,omitempty"`
-	Type       TransactionType `url:"type,omitempty"`
-	Limit      int             `url:"limit,omitempty"`
+	Paginate  bool            `url:"paginate,omitempty"`
+	End       string          `url:"end,omitempty"`
+	Start     string          `url:"start,omitempty"`
+	Narration string          `url:"narration,omitempty"`
+	Type      TransactionType `url:"type,omitempty"`
+	Limit     int             `url:"limit,omitempty"`
 }
 
 type Transaction struct {
@@ -76,7 +77,7 @@ func (t *TransactionService) All(ctx context.Context,
 	}
 
 	var response TransactionsResponse
-	_, err = t.client.Do(ctx, req, response)
+	_, err = t.client.Do(ctx, req, &response)
 	return response.Data, response.Meta, err
 }
 
@@ -110,7 +111,7 @@ func (t *TransactionService) Credits(ctx context.Context, accountID string) (
 		return resp, nil
 	}
 
-	_, err = t.client.Do(ctx, req, resp)
+	_, err = t.client.Do(ctx, req, &resp)
 	return resp, err
 }
 
@@ -131,6 +132,6 @@ func (t *TransactionService) Debits(ctx context.Context, accountID string) (
 		return resp, nil
 	}
 
-	_, err = t.client.Do(ctx, req, resp)
+	_, err = t.client.Do(ctx, req, &resp)
 	return resp, err
 }

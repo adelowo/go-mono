@@ -120,11 +120,11 @@ func (a *AuthorisationService) Reauthorise(ctx context.Context,
 		return emptyResp, err
 	}
 
-	var tokenExchange ReauthorisationResponse
-	_, err = a.client.Do(ctx, req, &tokenExchange)
+	var reauthResponse ReauthorisationResponse
+	_, err = a.client.Do(ctx, req, &reauthResponse)
 	if err != nil {
 		return emptyResp, err
 	}
 
-	return tokenExchange.Data, nil
+	return reauthResponse.Data, nil
 }
