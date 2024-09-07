@@ -109,7 +109,7 @@ func (a *AccountService) Balance(ctx context.Context,
 	}
 
 	if opts.Realtime {
-		req.Header.Add(http.CanonicalHeaderKey("X-REALTIME"), "true")
+		req.Header.Add("X-REALTIME", "true")
 	}
 
 	var response struct {
