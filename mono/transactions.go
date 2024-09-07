@@ -12,7 +12,7 @@ import (
 const (
 	// We do not use this internally but can be helpful for people who want to parse the date
 	// correctly
-	DateFormat = "2006-01-02"
+	DateFormat = "02-01-2006"
 )
 
 type TransactionService service
