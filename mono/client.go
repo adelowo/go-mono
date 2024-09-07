@@ -22,6 +22,12 @@ const (
 
 var errNonNilContext = errors.New("context must be non-nil")
 
+type BaseMonoResponse struct {
+	Status    string    `json:"status"`
+	Message   string    `json:"message"`
+	Timestamp time.Time `json:"timestamp"`
+}
+
 type NoopRequestBody struct{}
 
 // ToReader converts any struct into a io#Reader that can be used
