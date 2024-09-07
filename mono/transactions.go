@@ -79,3 +79,58 @@ func (t *TransactionService) All(ctx context.Context,
 	_, err = t.client.Do(ctx, req, response)
 	return response.Data, response.Meta, err
 }
+
+type heatmapResponse struct {
+	Total             int `json:"total"`
+	TransactionsCount int `json:"transactions_count"`
+	History           []struct {
+		Period            string `json:"period"`
+		Amount            int    `json:"amount"`
+		TransactionsCount int    `json:"transactions_count"`
+	} `json:"history"`
+}
+
+type InflowResponse = heatmapResponse
+type OutflowResponse = heatmapResponse
+
+func (t *TransactionService) Credits(ctx context.Context, accountID string) (
+	InflowResponse, error) {
+
+	var resp InflowResponse
+
+	body, err := ToReader(NoopRequestBody{})
+	if err != nil {
+		return resp, nil
+	}
+
+	req, err := t.client.newRequest(http.MethodGet,
+		fmt.Sprintf("/accounts/%s/credits", accountID),
+		body)
+	if err != nil {
+		return resp, nil
+	}
+
+	_, err = t.client.Do(ctx, req, resp)
+	return resp, err
+}
+
+func (t *TransactionService) Debits(ctx context.Context, accountID string) (
+	OutflowResponse, error) {
+
+	var resp OutflowResponse
+
+	body, err := ToReader(NoopRequestBody{})
+	if err != nil {
+		return resp, nil
+	}
+
+	req, err := t.client.newRequest(http.MethodGet,
+		fmt.Sprintf("/accounts/%s/debits", accountID),
+		body)
+	if err != nil {
+		return resp, nil
+	}
+
+	_, err = t.client.Do(ctx, req, resp)
+	return resp, err
+}
