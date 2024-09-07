@@ -25,6 +25,25 @@ go-mono is a Go client library for accessing the Mono v2 API.
 
 ```
 
+### Using your own HTTP Client
+
+Sometimes, you need to reuse an http client instead of letting the library
+create and manage one for you. Sometimes, this might also be because you
+want to trace the request amongst others.
+
+```go
+
+httpClient := http.Client{
+ Transport: otelhttp.NewTransport(http.DefaultTransport),
+}
+
+client, err := mono.New(
+  mono.WithAPISecret("test_sk_ddd"),
+  mono.WithHTTPClient(httpClient),)
+
+
+```
+
 ## Features
 
 - [x] Transactions
