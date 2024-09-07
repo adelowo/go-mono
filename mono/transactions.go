@@ -20,13 +20,14 @@ type TransactionService service
 // ENUM(debit,credit)
 type TransactionType string
 
-type TransactionsFilter struct {
+type TransactionsOptions struct {
 	Paginate  bool            `url:"paginate,omitempty"`
 	End       string          `url:"end,omitempty"`
 	Start     string          `url:"start,omitempty"`
 	Narration string          `url:"narration,omitempty"`
 	Type      TransactionType `url:"type,omitempty"`
 	Limit     int             `url:"limit,omitempty"`
+	Realtime  bool            `url:"-"`
 }
 
 type Transaction struct {
@@ -54,7 +55,7 @@ type TransactionsResponse struct {
 
 func (t *TransactionService) All(ctx context.Context,
 	accountID string,
-	opts TransactionsFilter) ([]Transaction, TransactionMetadata, error) {
+	opts TransactionsOptions) ([]Transaction, TransactionMetadata, error) {
 
 	var resp []Transaction
 	var metadata TransactionMetadata
@@ -74,6 +75,10 @@ func (t *TransactionService) All(ctx context.Context,
 		body)
 	if err != nil {
 		return resp, metadata, nil
+	}
+
+	if opts.Realtime {
+		req.Header.Add("X-REALTIME", "true")
 	}
 
 	var response TransactionsResponse
