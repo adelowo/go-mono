@@ -16,7 +16,7 @@ import (
 
 const (
 	Version          = "0.1.0"
-	defaultBaseURL   = "https://api.withmono.com/v2/"
+	defaultBaseURL   = "https://api.withmono.com/v2"
 	defaultUserAgent = "go-mono" + "/" + Version
 )
 
@@ -85,7 +85,7 @@ func (c *Client) newRequest(method, resource string, body io.Reader) (*http.Requ
 
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("User-Agent", c.userAgent)
-	req.Header.Set("mon-sec-key", c.apikey)
+	req.Header.Set("mono-sec-key", c.apikey)
 
 	return req, nil
 }
