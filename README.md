@@ -8,6 +8,23 @@ go-mono is a Go client library for accessing the Mono v2 API.
 > features needed over there. But feel free to open an issue or PR if you need
 > support for a specific endpoint
 
+## Usage
+
+```go
+
+ client, err := mono.New(mono.WithAPISecret("test_sk_ddd"))
+ if err != nil {
+  log.Fatal(err)
+ }
+
+ // or other methods as you use
+ err = client.Account.Unlink(context.Background(), "id")
+ if err != nil {
+  log.Fatal(err)
+ }
+
+```
+
 ## Features
 
 - [x] Transactions
@@ -22,7 +39,7 @@ go-mono is a Go client library for accessing the Mono v2 API.
   - [x] Details
   - [x] Unlink account
   - [ ] Identity
-  - [ ] Balance
+  - [x] Balance
   - [ ] Income
   - [ ] Income records
   - [ ] All accounts linked to business

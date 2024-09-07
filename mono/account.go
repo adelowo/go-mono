@@ -84,3 +84,41 @@ func (a *AccountService) Unlink(ctx context.Context,
 	_, err = a.client.Do(ctx, req, nil)
 	return err
 }
+
+type FetchBalanceOptions struct {
+	AccountID string
+	Realtime  bool
+}
+
+func (a *AccountService) Balance(ctx context.Context,
+	opts FetchBalanceOptions) (int64, error) {
+
+	if util.IsStringEmpty(opts.AccountID) {
+		return 0, errors.New("please provide a valid accountID")
+	}
+
+	body, err := ToReader(NoopRequestBody{})
+	if err != nil {
+		return 0, err
+	}
+
+	req, err := a.client.newRequest(http.MethodGet,
+		fmt.Sprintf("/accounts/%s/balance", opts.AccountID), body)
+	if err != nil {
+		return 0, err
+	}
+
+	if opts.Realtime {
+		req.Header.Add("X-REALTIME", "true")
+	}
+
+	var response struct {
+		BaseMonoResponse
+		Data struct {
+			Balance int64 `json:"balance,omitempty"`
+		} `json:"data,omitempty"`
+	}
+
+	_, err = a.client.Do(ctx, req, response)
+	return response.Data.Balance, err
+}
