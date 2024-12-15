@@ -266,3 +266,43 @@ func (d *DirectDebitService) Balance(ctx context.Context,
 	_, err = d.client.Do(ctx, req, nil)
 	return 0, err
 }
+
+type Bank struct {
+	Name        string `json:"name,omitempty"`
+	BankCode    string `json:"bank_code,omitempty"`
+	NIPCode     string `json:"nip_code,omitempty"`
+	DirectDebit bool   `json:"direct_debit,omitempty"`
+}
+
+type BanksResponse struct {
+	Data struct {
+		Banks []Bank `json:"banks,omitempty"`
+	} `json:"data,omitempty"`
+
+	BaseMonoResponse
+}
+
+func (d *DirectDebitService) Banks(ctx context.Context,
+	mandateID string) ([]Bank, error) {
+
+	var resp BanksResponse
+
+	if hermes.IsStringEmpty(mandateID) {
+		return resp.Data.Banks, errors.New("please provide a valid mandate id")
+	}
+
+	body, err := ToReader(NoopRequestBody{})
+	if err != nil {
+		return resp.Data.Banks, nil
+	}
+
+	req, err := d.client.newRequest(http.MethodGet,
+		fmt.Sprintf("/v3/accounts/%s/debits", mandateID),
+		body)
+	if err != nil {
+		return resp.Data.Banks, nil
+	}
+
+	_, err = d.client.Do(ctx, req, &resp)
+	return resp.Data.Banks, err
+}

@@ -64,6 +64,7 @@ client, err := mono.New(
   - [x] Pause mandate
   - [x] Reinstate mandate
   - [ ] Fetch all mandates
+  - [x] Fetch banks
 - [x] Customers
   - [x] Fetch details of a customer
   - [x] Update a customer
