@@ -24,8 +24,8 @@ type InitiateMandateOptions struct {
 	Description string                         `json:"description,omitempty"`
 	Reference   string                         `json:"reference,omitempty"`
 	Customer    string                         `json:"customer,omitempty"`
-	StartDate   time.Time                      `json:"start_date,omitempty"`
-	EndDate     time.Time                      `json:"end_date,omitempty"`
+	StartDate   string                         `json:"start_date,omitempty"`
+	EndDate     string                         `json:"end_date,omitempty"`
 	RedirectURL string                         `json:"redirect_url,omitempty"`
 }
 
