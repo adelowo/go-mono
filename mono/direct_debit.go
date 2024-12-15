@@ -2,9 +2,12 @@ package mono
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"time"
+
+	"github.com/ayinke-llc/hermes"
 )
 
 type DirectDebitService service
@@ -109,6 +112,10 @@ func (d *DirectDebitService) Details(ctx context.Context,
 
 	var resp FetchMandateDetails
 
+	if hermes.IsStringEmpty(mandateID) {
+		return resp, errors.New("please provide a valid mandate id")
+	}
+
 	body, err := ToReader(NoopRequestBody{})
 	if err != nil {
 		return resp, err
@@ -128,6 +135,10 @@ func (d *DirectDebitService) Details(ctx context.Context,
 
 func (d *DirectDebitService) Reinstate(ctx context.Context, mandateID string) error {
 
+	if hermes.IsStringEmpty(mandateID) {
+		return errors.New("please provide a valid mandate id")
+	}
+
 	body, err := ToReader(NoopRequestBody{})
 	if err != nil {
 		return err
@@ -145,6 +156,10 @@ func (d *DirectDebitService) Reinstate(ctx context.Context, mandateID string) er
 
 func (d *DirectDebitService) Pause(ctx context.Context, mandateID string) error {
 
+	if hermes.IsStringEmpty(mandateID) {
+		return errors.New("please provide a valid mandate id")
+	}
+
 	body, err := ToReader(NoopRequestBody{})
 	if err != nil {
 		return err
@@ -152,6 +167,76 @@ func (d *DirectDebitService) Pause(ctx context.Context, mandateID string) error 
 
 	req, err := d.client.newRequest(http.MethodPatch,
 		fmt.Sprintf("/v3/payments/mandates/%s/pause", mandateID), body)
+	if err != nil {
+		return err
+	}
+
+	_, err = d.client.Do(ctx, req, nil)
+	return err
+}
+
+type DebitAccount struct {
+	Status          string `json:"status"`
+	Amount          int    `json:"amount"`
+	Customer        string `json:"customer"`
+	Mandate         string `json:"mandate"`
+	ReferenceNumber string `json:"reference_number"`
+	AccountDebited  struct {
+		BankCode      string `json:"bank_code"`
+		AccountName   string `json:"account_name"`
+		AccountNumber string `json:"account_number"`
+		BankName      string `json:"bank_name"`
+	} `json:"account_debited"`
+	Beneficiary struct {
+		BankCode      string `json:"bank_code,omitempty"`
+		AccountName   string `json:"account_name,omitempty"`
+		AccountNumber string `json:"account_number,omitempty"`
+		BankName      string `json:"bank_name,omitempty"`
+	} `json:"beneficiary,omitempty"`
+	Date time.Time `json:"date"`
+}
+
+type DebitAccountResponse struct {
+	Data DebitAccount `json:"data,omitempty"`
+	BaseMonoResponse
+}
+
+type DebitAccountOptions struct {
+	Amount      int64  `json:"amount,omitempty"`
+	Reference   string `json:"reference,omitempty"`
+	Narration   string `json:"narration,omitempty"`
+	Beneficiary struct {
+		Nuban   string `json:"nuban,omitempty"`
+		NipCode string `json:"nip_code,omitempty"`
+	} `json:"beneficiary,omitempty"`
+}
+
+func (d *DirectDebitService) DebitAccount(ctx context.Context,
+	mandateID string, opts DebitAccountOptions) error {
+
+	if hermes.IsStringEmpty(mandateID) {
+		return errors.New("please provide a valid mandate id")
+	}
+
+	if hermes.IsStringEmpty(opts.Reference) {
+		return errors.New("please provide your reference")
+	}
+
+	if hermes.IsStringEmpty(opts.Narration) {
+		return errors.New("please provide your narration")
+	}
+
+	if opts.Amount < 10000 {
+		return errors.New("you can only debit a minimum of 100 naira")
+	}
+
+	body, err := ToReader(opts)
+	if err != nil {
+		return err
+	}
+
+	req, err := d.client.newRequest(http.MethodPatch,
+		fmt.Sprintf("/v3/payments/mandates/%s/debit", mandateID), body)
 	if err != nil {
 		return err
 	}
