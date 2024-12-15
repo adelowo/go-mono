@@ -4,7 +4,7 @@ go-mono is a Go client library for accessing the Mono v2 API.
 
 > [!WARNING]
 > This is not feature complete nor does it cover all available APIs.
-> I am building to use for <https://tewotewo.com> . So I will prioritize
+> I am building to use for <https://tewotewo.com> and <https://gympeek.com>. So I will prioritize
 > features needed over there. But feel free to open an issue or PR if you need
 > support for a specific endpoint
 
@@ -23,6 +23,7 @@ go-mono is a Go client library for accessing the Mono v2 API.
   log.Fatal(err)
  }
 
+ client.DirectDebit.Pause(context.Background(), "mmmmmmm")
 ```
 
 ### Using your own HTTP Client
@@ -54,6 +55,20 @@ client, err := mono.New(
 - [x] Inflow/Outflow
   - [x] Credits
   - [x] Debits
+- [x] Direct Debit
+  - [x] Initiate a mandate with Authorisation link
+  - [x] Fetch mandate details
+  - [x] Debit an account
+  - [x] Balance enquiry on account
+  - [ ] Cancel mandate
+  - [x] Pause mandate
+  - [x] Reinstate mandate
+  - [ ] Fetch all mandates
+  - [x] Fetch banks
+- [x] Customers
+  - [x] Fetch details of a customer
+  - [x] Update a customer
+  - [x] Delete a customer
 - [x] Accounts
   - [x] Details
   - [x] Unlink account

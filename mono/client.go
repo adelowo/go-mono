@@ -16,7 +16,7 @@ import (
 
 const (
 	Version          = "0.1.0"
-	defaultBaseURL   = "https://api.withmono.com/v2"
+	defaultBaseURL   = "https://api.withmono.com"
 	defaultUserAgent = "go-mono" + "/" + Version
 )
 
@@ -54,6 +54,7 @@ type Client struct {
 	Authorisation *AuthorisationService
 	Transaction   *TransactionService
 	Customer      *CustomerService
+	DirectDebit   *DirectDebitService
 }
 
 func New(opts ...Option) (*Client, error) {
@@ -81,6 +82,7 @@ func New(opts ...Option) (*Client, error) {
 	c.Authorisation = (*AuthorisationService)(srv)
 	c.Transaction = (*TransactionService)(srv)
 	c.Customer = (*CustomerService)(srv)
+	c.DirectDebit = (*DirectDebitService)(srv)
 
 	return c, nil
 }

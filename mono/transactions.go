@@ -71,7 +71,7 @@ func (t *TransactionService) All(ctx context.Context,
 	}
 
 	req, err := t.client.newRequest(http.MethodGet,
-		fmt.Sprintf("/accounts/%s/transactions?%s", accountID, v.Encode()),
+		fmt.Sprintf("/v2/accounts/%s/transactions?%s", accountID, v.Encode()),
 		body)
 	if err != nil {
 		return resp, metadata, nil
@@ -110,7 +110,7 @@ func (t *TransactionService) Credits(ctx context.Context, accountID string) (
 	}
 
 	req, err := t.client.newRequest(http.MethodGet,
-		fmt.Sprintf("/accounts/%s/credits", accountID),
+		fmt.Sprintf("/v2/accounts/%s/credits", accountID),
 		body)
 	if err != nil {
 		return resp, nil
@@ -131,7 +131,7 @@ func (t *TransactionService) Debits(ctx context.Context, accountID string) (
 	}
 
 	req, err := t.client.newRequest(http.MethodGet,
-		fmt.Sprintf("/accounts/%s/debits", accountID),
+		fmt.Sprintf("/v2/accounts/%s/debits", accountID),
 		body)
 	if err != nil {
 		return resp, nil
