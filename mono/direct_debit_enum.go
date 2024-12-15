@@ -12,6 +12,105 @@ import (
 )
 
 const (
+	// DebitTypeFixed is a DebitType of type fixed.
+	DebitTypeFixed DebitType = "fixed"
+	// DebitTypeVariable is a DebitType of type variable.
+	DebitTypeVariable DebitType = "variable"
+)
+
+var ErrInvalidDebitType = errors.New("not a valid DebitType")
+
+// String implements the Stringer interface.
+func (x DebitType) String() string {
+	return string(x)
+}
+
+// IsValid provides a quick way to determine if the typed value is
+// part of the allowed enumerated values
+func (x DebitType) IsValid() bool {
+	_, err := ParseDebitType(string(x))
+	return err == nil
+}
+
+var _DebitTypeValue = map[string]DebitType{
+	"fixed":    DebitTypeFixed,
+	"variable": DebitTypeVariable,
+}
+
+// ParseDebitType attempts to convert a string to a DebitType.
+func ParseDebitType(name string) (DebitType, error) {
+	if x, ok := _DebitTypeValue[name]; ok {
+		return x, nil
+	}
+	return DebitType(""), fmt.Errorf("%s is %w", name, ErrInvalidDebitType)
+}
+
+const (
+	// DirectDebitPaymentScheduleTypeRecurringDebit is a DirectDebitPaymentScheduleType of type recurring-debit.
+	DirectDebitPaymentScheduleTypeRecurringDebit DirectDebitPaymentScheduleType = "recurring-debit"
+	// DirectDebitPaymentScheduleTypeOneTime is a DirectDebitPaymentScheduleType of type one-time.
+	DirectDebitPaymentScheduleTypeOneTime DirectDebitPaymentScheduleType = "one-time"
+)
+
+var ErrInvalidDirectDebitPaymentScheduleType = errors.New("not a valid DirectDebitPaymentScheduleType")
+
+// String implements the Stringer interface.
+func (x DirectDebitPaymentScheduleType) String() string {
+	return string(x)
+}
+
+// IsValid provides a quick way to determine if the typed value is
+// part of the allowed enumerated values
+func (x DirectDebitPaymentScheduleType) IsValid() bool {
+	_, err := ParseDirectDebitPaymentScheduleType(string(x))
+	return err == nil
+}
+
+var _DirectDebitPaymentScheduleTypeValue = map[string]DirectDebitPaymentScheduleType{
+	"recurring-debit": DirectDebitPaymentScheduleTypeRecurringDebit,
+	"one-time":        DirectDebitPaymentScheduleTypeOneTime,
+}
+
+// ParseDirectDebitPaymentScheduleType attempts to convert a string to a DirectDebitPaymentScheduleType.
+func ParseDirectDebitPaymentScheduleType(name string) (DirectDebitPaymentScheduleType, error) {
+	if x, ok := _DirectDebitPaymentScheduleTypeValue[name]; ok {
+		return x, nil
+	}
+	return DirectDebitPaymentScheduleType(""), fmt.Errorf("%s is %w", name, ErrInvalidDirectDebitPaymentScheduleType)
+}
+
+const (
+	// DirectPayMethodMandate is a DirectPayMethod of type mandate.
+	DirectPayMethodMandate DirectPayMethod = "mandate"
+)
+
+var ErrInvalidDirectPayMethod = errors.New("not a valid DirectPayMethod")
+
+// String implements the Stringer interface.
+func (x DirectPayMethod) String() string {
+	return string(x)
+}
+
+// IsValid provides a quick way to determine if the typed value is
+// part of the allowed enumerated values
+func (x DirectPayMethod) IsValid() bool {
+	_, err := ParseDirectPayMethod(string(x))
+	return err == nil
+}
+
+var _DirectPayMethodValue = map[string]DirectPayMethod{
+	"mandate": DirectPayMethodMandate,
+}
+
+// ParseDirectPayMethod attempts to convert a string to a DirectPayMethod.
+func ParseDirectPayMethod(name string) (DirectPayMethod, error) {
+	if x, ok := _DirectPayMethodValue[name]; ok {
+		return x, nil
+	}
+	return DirectPayMethod(""), fmt.Errorf("%s is %w", name, ErrInvalidDirectPayMethod)
+}
+
+const (
 	// MandateTypeEmandata is a MandateType of type emandata.
 	MandateTypeEmandata MandateType = "emandata"
 	// MandateTypeGsm is a MandateType of type gsm.
