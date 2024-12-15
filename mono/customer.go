@@ -41,7 +41,7 @@ func (c *CustomerService) Details(ctx context.Context,
 	}
 
 	req, err := c.client.newRequest(http.MethodGet,
-		fmt.Sprintf("/customers/%s", accountID),
+		fmt.Sprintf("/v2/customers/%s", accountID),
 		body)
 	if err != nil {
 		return resp, err
@@ -75,7 +75,7 @@ func (c *CustomerService) Update(ctx context.Context,
 	}
 
 	req, err := c.client.newRequest(http.MethodPatch,
-		fmt.Sprintf("/customers/%s", customerID),
+		fmt.Sprintf("/v2/customers/%s", customerID),
 		body)
 	if err != nil {
 		return err

@@ -40,7 +40,7 @@ func (a *AuthorisationService) ExchangeToken(ctx context.Context,
 	}
 
 	req, err := a.client.newRequest(http.MethodPost,
-		"/accounts/auth", body)
+		"/v2/accounts/auth", body)
 	if err != nil {
 		return emptyResp, err
 	}
@@ -115,7 +115,7 @@ func (a *AuthorisationService) Reauthorise(ctx context.Context,
 	}
 
 	req, err := a.client.newRequest(http.MethodPost,
-		"/accounts/initiate", body)
+		"/v2/accounts/initiate", body)
 	if err != nil {
 		return emptyResp, err
 	}

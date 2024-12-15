@@ -16,7 +16,7 @@ import (
 
 const (
 	Version          = "0.1.0"
-	defaultBaseURL   = "https://api.withmono.com/v2"
+	defaultBaseURL   = "https://api.withmono.com"
 	defaultUserAgent = "go-mono" + "/" + Version
 )
 

@@ -48,7 +48,7 @@ func (a *AccountService) Details(ctx context.Context,
 	}
 
 	req, err := a.client.newRequest(http.MethodGet,
-		fmt.Sprintf("/accounts/%s", accountID),
+		fmt.Sprintf("/v2/accounts/%s", accountID),
 		body)
 	if err != nil {
 		return resp, err
@@ -76,7 +76,7 @@ func (a *AccountService) Unlink(ctx context.Context,
 	}
 
 	req, err := a.client.newRequest(http.MethodPost,
-		fmt.Sprintf("/accounts/%s/unlink", accountID), body)
+		fmt.Sprintf("/v2/accounts/%s/unlink", accountID), body)
 	if err != nil {
 		return err
 	}
@@ -103,7 +103,7 @@ func (a *AccountService) Balance(ctx context.Context,
 	}
 
 	req, err := a.client.newRequest(http.MethodGet,
-		fmt.Sprintf("/accounts/%s/balance", opts.AccountID), body)
+		fmt.Sprintf("/v2/accounts/%s/balance", opts.AccountID), body)
 	if err != nil {
 		return 0, err
 	}
