@@ -24,6 +24,9 @@ type AccountDetails struct {
 			Type     string `json:"type"`
 		} `json:"institution"`
 	} `json:"account"`
+	Customer struct {
+		ID string `json:"id,omitempty"`
+	} `json:"customer,omitempty"`
 	Meta struct {
 		DataStatus string `json:"data_status"`
 		AuthMethod string `json:"auth_method"`
