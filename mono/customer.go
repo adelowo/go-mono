@@ -83,7 +83,7 @@ func (c *CustomerService) Create(ctx context.Context,
 		return resp, err
 	}
 
-	req, err := c.client.newRequest(http.MethodPatch, "/v2/customers", body)
+	req, err := c.client.newRequest(http.MethodPost, "/v2/customers", body)
 	if err != nil {
 		return resp, err
 	}
