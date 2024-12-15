@@ -23,6 +23,7 @@ go-mono is a Go client library for accessing the Mono v2 API.
   log.Fatal(err)
  }
 
+ client.DirectDebit.Pause(context.Background(), "mmmmmmm")
 ```
 
 ### Using your own HTTP Client
@@ -60,8 +61,8 @@ client, err := mono.New(
   - [ ] Debit an account
   - [ ] Balance enquiry on account
   - [ ] Cancel mandate
-  - [ ] Pause mandate
-  - [ ] Reinstate mandate
+  - [x] Pause mandate
+  - [x] Reinstate mandate
   - [ ] Fetch all mandates
 - [x] Customers
   - [x] Fetch details of a customer

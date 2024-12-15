@@ -123,5 +123,39 @@ func (d *DirectDebitService) Details(ctx context.Context,
 	var mandate FetchMandateDetailsResponse
 
 	_, err = d.client.Do(ctx, req, &mandate)
-	return mandate.Data, nil
+	return mandate.Data, err
+}
+
+func (d *DirectDebitService) Reinstate(ctx context.Context, mandateID string) error {
+
+	body, err := ToReader(NoopRequestBody{})
+	if err != nil {
+		return err
+	}
+
+	req, err := d.client.newRequest(http.MethodPatch,
+		fmt.Sprintf("/v3/payments/mandates/%s/reinstate", mandateID), body)
+	if err != nil {
+		return err
+	}
+
+	_, err = d.client.Do(ctx, req, nil)
+	return err
+}
+
+func (d *DirectDebitService) Pause(ctx context.Context, mandateID string) error {
+
+	body, err := ToReader(NoopRequestBody{})
+	if err != nil {
+		return err
+	}
+
+	req, err := d.client.newRequest(http.MethodPatch,
+		fmt.Sprintf("/v3/payments/mandates/%s/pause", mandateID), body)
+	if err != nil {
+		return err
+	}
+
+	_, err = d.client.Do(ctx, req, nil)
+	return err
 }
