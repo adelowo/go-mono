@@ -111,8 +111,8 @@ func ParseDirectPayMethod(name string) (DirectPayMethod, error) {
 }
 
 const (
-	// MandateTypeEmandata is a MandateType of type emandata.
-	MandateTypeEmandata MandateType = "emandata"
+	// MandateTypeEmandate is a MandateType of type emandate.
+	MandateTypeEmandate MandateType = "emandate"
 	// MandateTypeGsm is a MandateType of type gsm.
 	MandateTypeGsm MandateType = "gsm"
 	// MandateTypeSigned is a MandateType of type signed.
@@ -134,7 +134,7 @@ func (x MandateType) IsValid() bool {
 }
 
 var _MandateTypeValue = map[string]MandateType{
-	"emandata": MandateTypeEmandata,
+	"emandate": MandateTypeEmandate,
 	"gsm":      MandateTypeGsm,
 	"signed":   MandateTypeSigned,
 }

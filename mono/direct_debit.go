@@ -35,7 +35,7 @@ type DirectDebitPaymentScheduleType string
 // ENUM(fixed,variable)
 type DebitType string
 
-// ENUM(emandata,gsm,signed)
+// ENUM(emandate,gsm,signed)
 type MandateType string
 
 type CreatedManadateDetails struct {
