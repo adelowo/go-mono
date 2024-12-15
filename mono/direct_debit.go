@@ -23,10 +23,12 @@ type InitiateMandateOptions struct {
 	DebitType   DebitType                      `json:"debit_type,omitempty"`
 	Description string                         `json:"description,omitempty"`
 	Reference   string                         `json:"reference,omitempty"`
-	Customer    string                         `json:"customer,omitempty"`
-	StartDate   string                         `json:"start_date,omitempty"`
-	EndDate     string                         `json:"end_date,omitempty"`
-	RedirectURL string                         `json:"redirect_url,omitempty"`
+	Customer    struct {
+		ID string `json:"id,omitempty"`
+	} `json:"customer,omitempty"`
+	StartDate   string `json:"start_date,omitempty"`
+	EndDate     string `json:"end_date,omitempty"`
+	RedirectURL string `json:"redirect_url,omitempty"`
 }
 
 // ENUM(recurring-debit,one-time)
