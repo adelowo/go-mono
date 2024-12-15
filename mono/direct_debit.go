@@ -258,7 +258,7 @@ func (d *DirectDebitService) Balance(ctx context.Context,
 	}
 
 	req, err := d.client.newRequest(http.MethodPatch,
-		fmt.Sprintf("/v3/payments/mandates/%s/balance-inquiry/%d", mandateID, amount), body)
+		fmt.Sprintf("/v3/payments/mandates/%s/balance-inquiry/?amount=%d", mandateID, amount), body)
 	if err != nil {
 		return 0, err
 	}
