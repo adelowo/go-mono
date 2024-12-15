@@ -58,8 +58,8 @@ client, err := mono.New(
 - [x] Direct Debit
   - [x] Initiate a mandate with Authorisation link
   - [x] Fetch mandate details
-  - [ ] Debit an account
-  - [ ] Balance enquiry on account
+  - [x] Debit an account
+  - [x] Balance enquiry on account
   - [ ] Cancel mandate
   - [x] Pause mandate
   - [x] Reinstate mandate

@@ -244,3 +244,25 @@ func (d *DirectDebitService) DebitAccount(ctx context.Context,
 	_, err = d.client.Do(ctx, req, nil)
 	return err
 }
+
+func (d *DirectDebitService) Balance(ctx context.Context,
+	mandateID string, amount int64) (int64, error) {
+
+	if hermes.IsStringEmpty(mandateID) {
+		return 0, errors.New("please provide a valid mandate id")
+	}
+
+	body, err := ToReader(NoopRequestBody{})
+	if err != nil {
+		return 0, err
+	}
+
+	req, err := d.client.newRequest(http.MethodPatch,
+		fmt.Sprintf("/v3/payments/mandates/%s/balance-inquiry/%d", mandateID, amount), body)
+	if err != nil {
+		return 0, err
+	}
+
+	_, err = d.client.Do(ctx, req, nil)
+	return 0, err
+}
