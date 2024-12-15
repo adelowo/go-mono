@@ -57,6 +57,43 @@ func (c *CustomerService) Details(ctx context.Context,
 	return customer.Data, nil
 }
 
+// ENUM(individual,business)
+type CustomerType string
+
+type CreateCustomerOptions struct {
+	Email     string       `json:"email,omitempty"`
+	Type      CustomerType `json:"type,omitempty"`
+	FirstName string       `json:"first_name,omitempty"`
+	LastName  string       `json:"last_name,omitempty"`
+	Address   string       `json:"address,omitempty"`
+	Phone     string       `json:"phone,omitempty"`
+	Identity  struct {
+		Type   string `json:"type,omitempty"`
+		Number string `json:"number,omitempty"`
+	} `json:"identity,omitempty"`
+}
+
+func (c *CustomerService) Create(ctx context.Context,
+	opts CreateCustomerOptions) (CustomerDetails, error) {
+
+	var resp CustomerDetails
+
+	body, err := ToReader(opts)
+	if err != nil {
+		return resp, err
+	}
+
+	req, err := c.client.newRequest(http.MethodPatch, "/v2/customers", body)
+	if err != nil {
+		return resp, err
+	}
+
+	var customer CustomerDetailsResponse
+
+	_, err = c.client.Do(ctx, req, &customer)
+	return customer.Data, err
+}
+
 type UpdateCustomerOptions struct {
 	Phone    string `json:"phone,omitempty"`
 	Address  string `json:"address,omitempty"`
