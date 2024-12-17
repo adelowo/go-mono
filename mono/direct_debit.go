@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/ayinke-llc/hermes"
@@ -269,6 +270,8 @@ func (d *DirectDebitService) Balance(ctx context.Context,
 	return 0, err
 }
 
+type Banks []Bank
+
 type Bank struct {
 	Name        string `json:"name,omitempty"`
 	BankCode    string `json:"bank_code,omitempty"`
@@ -278,29 +281,17 @@ type Bank struct {
 
 type BanksResponse struct {
 	Data struct {
-		Banks []Bank `json:"banks,omitempty"`
+		Banks Banks `json:"banks,omitempty"`
 	} `json:"data,omitempty"`
 
 	BaseMonoResponse
 }
 
-func (d *DirectDebitService) Banks(ctx context.Context,
-	mandateID string) ([]Bank, error) {
+func (d *DirectDebitService) Banks(ctx context.Context) (Banks, error) {
 
 	var resp BanksResponse
 
-	if hermes.IsStringEmpty(mandateID) {
-		return resp.Data.Banks, errors.New("please provide a valid mandate id")
-	}
-
-	body, err := ToReader(NoopRequestBody{})
-	if err != nil {
-		return resp.Data.Banks, nil
-	}
-
-	req, err := d.client.newRequest(http.MethodGet,
-		fmt.Sprintf("/v3/accounts/%s/debits", mandateID),
-		body)
+	req, err := d.client.newRequest(http.MethodGet, "/v3/banks/list", strings.NewReader(""))
 	if err != nil {
 		return resp.Data.Banks, nil
 	}
