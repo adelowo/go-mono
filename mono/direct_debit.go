@@ -22,6 +22,7 @@ type CreatedManadateOptions struct {
 	BankCode      string `json:"bank_code,omitempty"`
 	Signature     string `json:"signature,omitempty"`
 	AccountID     string `json:"account,omitempty"`
+	Customer      string `json:"customer,omitempty"`
 }
 
 type InitiateMandateOptions struct {
@@ -50,19 +51,37 @@ type DebitType string
 type MandateType string
 
 type CreatedManadateDetails struct {
-	MonoURL     string      `json:"mono_url"`
-	Type        string      `json:"type"`
-	Method      string      `json:"method"`
-	MandateType MandateType `json:"mandate_type"`
-	Amount      int64       `json:"amount"`
-	Description string      `json:"description"`
-	Reference   string      `json:"reference"`
-	Customer    string      `json:"customer"`
-	RedirectURL string      `json:"redirect_url"`
-	CreatedAt   time.Time   `json:"created_at"`
-	UpdatedAt   time.Time   `json:"updated_at"`
-	StartDate   string      `json:"start_date"`
-	EndDate     string      `json:"end_date"`
+	MonoURL              string      `json:"mono_url,omitempty"`
+	Type                 string      `json:"type,omitempty"`
+	Method               string      `json:"method,omitempty"`
+	MandateType          MandateType `json:"mandate_type,omitempty"`
+	Amount               int64       `json:"amount,omitempty"`
+	Description          string      `json:"description,omitempty"`
+	Reference            string      `json:"reference,omitempty"`
+	Customer             string      `json:"customer,omitempty"`
+	RedirectURL          string      `json:"redirect_url,omitempty"`
+	CreatedAt            time.Time   `json:"created_at,omitempty"`
+	UpdatedAt            time.Time   `json:"updated_at,omitempty"`
+	StartDate            string      `json:"start_date,omitempty"`
+	EndDate              string      `json:"end_date,omitempty"`
+	ID                   string      `json:"id,omitempty"`
+	TransferDestinations []struct {
+		BankName      string `json:"bank_name,omitempty"`
+		AccountNumber string `json:"account_number,omitempty"`
+		Icon          string `json:"icon,omitempty"`
+	} `json:"transfer_destinations,omitempty"`
+	OTPDestinations struct {
+		Session string `json:"session,omitempty"`
+		Methods []struct {
+			Type  DirectDebitOTPMandateMethodType `json:"type,omitempty"`
+			Value string                          `json:"value,omitempty"`
+		} `json:"methods,omitempty"`
+	} `json:"otp_destinations,omitempty"`
+	Institution struct {
+		BankCode string `json:"bank_code,omitempty"`
+		NipCode  string `json:"nip_code,omitempty"`
+		Name     string `json:"name,omitempty"`
+	} `json:"institution,omitempty"`
 }
 
 type CreatedManadateDetailsResponse struct {
@@ -124,10 +143,10 @@ type FetchMandateDetails struct {
 	AccountName   string `json:"account_name"`
 	AccountNumber string `json:"account_number"`
 	Institution   struct {
-		BankCode string `json:"bank_code"`
-		NipCode  string `json:"nip_code"`
-		Name     string `json:"name"`
-	} `json:"institution"`
+		BankCode string `json:"bank_code,omitempty"`
+		NipCode  string `json:"nip_code,omitempty"`
+		Name     string `json:"name,omitempty"`
+	} `json:"institution,omitempty"`
 	Customer  string    `json:"customer"`
 	Narration string    `json:"narration"`
 	StartDate time.Time `json:"start_date"`
@@ -328,4 +347,69 @@ func (d *DirectDebitService) Banks(ctx context.Context) (Banks, error) {
 
 	_, err = d.client.Do(ctx, req, &resp)
 	return resp.Data.Banks, err
+}
+
+// ENUM(phone_number,email)
+type DirectDebitOTPMandateMethodType string
+
+type SetOTPMethodOptions struct {
+	Method  DirectDebitOTPMandateMethodType `json:"method,omitempty"`
+	Session string                          `json:"session,omitempty"`
+}
+
+func (d *DirectDebitService) SetOTPMethod(ctx context.Context,
+	opts SetOTPMethodOptions) error {
+
+	if hermes.IsStringEmpty(opts.Session) {
+		return errors.New("please provide a valid session id")
+	}
+
+	if !opts.Method.IsValid() {
+		return errors.New("invalid otp method selected")
+	}
+
+	body, err := ToReader(opts)
+	if err != nil {
+		return err
+	}
+
+	req, err := d.client.newRequest(http.MethodPost,
+		"/v3/payments/mandates/verify/otp", body)
+	if err != nil {
+		return err
+	}
+
+	_, err = d.client.Do(ctx, req, nil)
+	return err
+}
+
+type VerifyOTPOptions struct {
+	Session string `json:"session,omitempty"`
+	OTP     string `json:"otp,omitempty"`
+}
+
+func (d *DirectDebitService) VerifyOTP(ctx context.Context,
+	opts VerifyOTPOptions) error {
+
+	if hermes.IsStringEmpty(opts.Session) {
+		return errors.New("please provide a valid session id")
+	}
+
+	if hermes.IsStringEmpty(opts.OTP) {
+		return errors.New("please provide an OTP")
+	}
+
+	body, err := ToReader(opts)
+	if err != nil {
+		return err
+	}
+
+	req, err := d.client.newRequest(http.MethodPost,
+		"/v3/payments/mandates/verify/otp", body)
+	if err != nil {
+		return err
+	}
+
+	_, err = d.client.Do(ctx, req, nil)
+	return err
 }

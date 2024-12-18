@@ -46,6 +46,40 @@ func ParseDebitType(name string) (DebitType, error) {
 }
 
 const (
+	// DirectDebitOTPMandateMethodTypePhoneNumber is a DirectDebitOTPMandateMethodType of type phone_number.
+	DirectDebitOTPMandateMethodTypePhoneNumber DirectDebitOTPMandateMethodType = "phone_number"
+	// DirectDebitOTPMandateMethodTypeEmail is a DirectDebitOTPMandateMethodType of type email.
+	DirectDebitOTPMandateMethodTypeEmail DirectDebitOTPMandateMethodType = "email"
+)
+
+var ErrInvalidDirectDebitOTPMandateMethodType = errors.New("not a valid DirectDebitOTPMandateMethodType")
+
+// String implements the Stringer interface.
+func (x DirectDebitOTPMandateMethodType) String() string {
+	return string(x)
+}
+
+// IsValid provides a quick way to determine if the typed value is
+// part of the allowed enumerated values
+func (x DirectDebitOTPMandateMethodType) IsValid() bool {
+	_, err := ParseDirectDebitOTPMandateMethodType(string(x))
+	return err == nil
+}
+
+var _DirectDebitOTPMandateMethodTypeValue = map[string]DirectDebitOTPMandateMethodType{
+	"phone_number": DirectDebitOTPMandateMethodTypePhoneNumber,
+	"email":        DirectDebitOTPMandateMethodTypeEmail,
+}
+
+// ParseDirectDebitOTPMandateMethodType attempts to convert a string to a DirectDebitOTPMandateMethodType.
+func ParseDirectDebitOTPMandateMethodType(name string) (DirectDebitOTPMandateMethodType, error) {
+	if x, ok := _DirectDebitOTPMandateMethodTypeValue[name]; ok {
+		return x, nil
+	}
+	return DirectDebitOTPMandateMethodType(""), fmt.Errorf("%s is %w", name, ErrInvalidDirectDebitOTPMandateMethodType)
+}
+
+const (
 	// DirectDebitPaymentScheduleTypeRecurringDebit is a DirectDebitPaymentScheduleType of type recurring-debit.
 	DirectDebitPaymentScheduleTypeRecurringDebit DirectDebitPaymentScheduleType = "recurring-debit"
 	// DirectDebitPaymentScheduleTypeOneTime is a DirectDebitPaymentScheduleType of type one-time.
