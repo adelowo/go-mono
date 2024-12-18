@@ -16,6 +16,14 @@ type DirectDebitService service
 // ENUM(mandate)
 type DirectPayMethod string
 
+type CreatedManadateOptions struct {
+	InitiateMandateOptions
+	AccountNumber string `json:"account_number,omitempty"`
+	BankCode      string `json:"bank_code,omitempty"`
+	Signature     string `json:"signature,omitempty"`
+	AccountID     string `json:"account,omitempty"`
+}
+
 type InitiateMandateOptions struct {
 	Amount      int64                          `json:"amount,omitempty"`
 	Type        DirectDebitPaymentScheduleType `json:"type,omitempty"`
@@ -60,6 +68,28 @@ type CreatedManadateDetails struct {
 type CreatedManadateDetailsResponse struct {
 	BaseMonoResponse
 	Data CreatedManadateDetails `json:"data,omitempty"`
+}
+
+func (d *DirectDebitService) Create(ctx context.Context,
+	opts CreatedManadateOptions) (CreatedManadateDetails, error) {
+
+	var resp CreatedManadateDetails
+
+	body, err := ToReader(opts)
+	if err != nil {
+		return resp, err
+	}
+
+	req, err := d.client.newRequest(
+		http.MethodPost, "/v3/payments/mandates", body)
+	if err != nil {
+		return resp, err
+	}
+
+	var res CreatedManadateDetailsResponse
+
+	_, err = d.client.Do(ctx, req, &res)
+	return res.Data, err
 }
 
 func (d *DirectDebitService) InitiateMandate(ctx context.Context,
