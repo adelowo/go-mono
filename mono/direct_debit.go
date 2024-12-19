@@ -59,6 +59,9 @@ type CreatedManadateDetails struct {
 	Description          string      `json:"description,omitempty"`
 	Reference            string      `json:"reference,omitempty"`
 	Customer             string      `json:"customer,omitempty"`
+	AccountName          string      `json:"account_name,omitempty"`
+	AccountNumber        string      `json:"account_number,omitempty"`
+	Bank                 string      `json:"bank,omitempty"`
 	RedirectURL          string      `json:"redirect_url,omitempty"`
 	CreatedAt            time.Time   `json:"created_at,omitempty"`
 	UpdatedAt            time.Time   `json:"updated_at,omitempty"`
