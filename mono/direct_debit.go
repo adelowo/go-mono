@@ -290,7 +290,7 @@ func (d *DirectDebitService) DebitAccount(ctx context.Context,
 		return err
 	}
 
-	req, err := d.client.newRequest(http.MethodPatch,
+	req, err := d.client.newRequest(http.MethodPost,
 		fmt.Sprintf("/v3/payments/mandates/%s/debit", mandateID), body)
 	if err != nil {
 		return err
