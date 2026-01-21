@@ -11,13 +11,13 @@ import (
 	"strings"
 	"time"
 
-	"github.com/adelowo/go-mono/mono/util"
+	"github.com/ayinke-llc/hermes"
 )
 
 const (
-	Version          = "0.1.0"
+	Version          = "0.2.0"
 	defaultBaseURL   = "https://api.withmono.com"
-	defaultUserAgent = "go-mono" + "/" + Version
+	defaultUserAgent = "ayinke-llc/go-mono" + "/" + Version
 )
 
 var errNonNilContext = errors.New("context must be non-nil")
@@ -62,13 +62,14 @@ func New(opts ...Option) (*Client, error) {
 		httpClient: &http.Client{
 			Timeout: time.Second * 30,
 		},
+		userAgent: defaultUserAgent,
 	}
 
 	for _, opt := range opts {
 		opt(c)
 	}
 
-	if util.IsStringEmpty(c.apikey) {
+	if hermes.IsStringEmpty(c.apikey) {
 		return nil, errors.New("please provide your API key")
 	}
 

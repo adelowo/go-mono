@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/adelowo/go-mono/mono/util"
+	"github.com/ayinke-llc/hermes"
 )
 
 type AccountDetails struct {
@@ -69,7 +69,7 @@ func (a *AccountService) Details(ctx context.Context,
 func (a *AccountService) Unlink(ctx context.Context,
 	accountID string) error {
 
-	if util.IsStringEmpty(accountID) {
+	if hermes.IsStringEmpty(accountID) {
 		return errors.New("please provide a valid accountID")
 	}
 
@@ -96,7 +96,7 @@ type FetchBalanceOptions struct {
 func (a *AccountService) Balance(ctx context.Context,
 	opts FetchBalanceOptions) (int64, error) {
 
-	if util.IsStringEmpty(opts.AccountID) {
+	if hermes.IsStringEmpty(opts.AccountID) {
 		return 0, errors.New("please provide a valid accountID")
 	}
 

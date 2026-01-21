@@ -8,7 +8,7 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/adelowo/go-mono/mono/util"
+	"github.com/ayinke-llc/hermes"
 	"github.com/oklog/ulid/v2"
 )
 
@@ -28,7 +28,7 @@ type ExchangeTokenResponse struct {
 func (a *AuthorisationService) ExchangeToken(ctx context.Context,
 	opts ExchangeTokenRequest) (string, error) {
 
-	if util.IsStringEmpty(opts.Code) {
+	if hermes.IsStringEmpty(opts.Code) {
 		return "", errors.New("please provide the code to exchange")
 	}
 
@@ -87,7 +87,7 @@ func (a *AuthorisationService) Reauthorise(ctx context.Context,
 
 	var emptyResp AccountReauthorisation
 
-	if util.IsStringEmpty(opts.AccountID) {
+	if hermes.IsStringEmpty(opts.AccountID) {
 		return emptyResp, errors.New("please provide the account id to reauthorise")
 	}
 
@@ -100,7 +100,7 @@ func (a *AuthorisationService) Reauthorise(ctx context.Context,
 		return emptyResp, fmt.Errorf("please provide a valid redirect url....%w", err)
 	}
 
-	if util.IsStringEmpty(opts.Meta.Ref) {
+	if hermes.IsStringEmpty(opts.Meta.Ref) {
 		id, err := ulid.New(ulid.Timestamp(time.Now()), ulid.DefaultEntropy())
 		if err != nil {
 			return emptyResp, fmt.Errorf("could not generate unique ULID reference..%w", err)
