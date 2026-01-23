@@ -125,3 +125,47 @@ func (a *AccountService) Balance(ctx context.Context,
 	_, err = a.client.Do(ctx, req, &response)
 	return response.Data.Balance, err
 }
+
+// DataSyncOptions contains options for the DataSync method
+type DataSyncOptions struct {
+	AccountID                string
+	AllowIncompleteStatement bool
+}
+
+// ENUM(SYNC_SUCCESSFUL,REAUTHORISATION_REQUIRED,INCOMPLETE_STATEMENT_ERROR)
+type DataSyncCode string
+
+// DataSyncResponse represents the response from the data sync endpoint
+type DataSyncResponse struct {
+	Status     string       `json:"status"`
+	HasNewData bool         `json:"hasNewData"`
+	Code       DataSyncCode `json:"code"`
+}
+
+func (a *AccountService) DataSync(ctx context.Context,
+	opts DataSyncOptions) (DataSyncResponse, error) {
+
+	var resp DataSyncResponse
+
+	if hermes.IsStringEmpty(opts.AccountID) {
+		return resp, errors.New("please provide a valid accountID")
+	}
+
+	body, err := ToReader(NoopRequestBody{})
+	if err != nil {
+		return resp, err
+	}
+
+	path := fmt.Sprintf("/accounts/%s/sync", opts.AccountID)
+	if opts.AllowIncompleteStatement {
+		path += "?allow_incomplete_statement=true"
+	}
+
+	req, err := a.client.newRequest(http.MethodPost, path, body)
+	if err != nil {
+		return resp, err
+	}
+
+	_, err = a.client.Do(ctx, req, &resp)
+	return resp, err
+}
