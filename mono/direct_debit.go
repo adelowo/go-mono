@@ -171,13 +171,8 @@ func (d *DirectDebitService) Details(ctx context.Context,
 		return resp, errors.New("please provide a valid mandate id")
 	}
 
-	body, err := ToReader(NoopRequestBody{})
-	if err != nil {
-		return resp, err
-	}
-
 	req, err := d.client.newRequest(http.MethodGet,
-		fmt.Sprintf("/v3/payments/mandates/%s", mandateID), body)
+		fmt.Sprintf("/v3/payments/mandates/%s", mandateID), nil)
 	if err != nil {
 		return resp, err
 	}

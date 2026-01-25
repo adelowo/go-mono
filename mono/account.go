@@ -45,14 +45,9 @@ func (a *AccountService) Details(ctx context.Context,
 
 	var resp AccountDetails
 
-	body, err := ToReader(NoopRequestBody{})
-	if err != nil {
-		return resp, err
-	}
-
 	req, err := a.client.newRequest(http.MethodGet,
 		fmt.Sprintf("/v2/accounts/%s", accountID),
-		body)
+		nil)
 	if err != nil {
 		return resp, err
 	}
@@ -100,13 +95,8 @@ func (a *AccountService) Balance(ctx context.Context,
 		return 0, errors.New("please provide a valid accountID")
 	}
 
-	body, err := ToReader(NoopRequestBody{})
-	if err != nil {
-		return 0, err
-	}
-
 	req, err := a.client.newRequest(http.MethodGet,
-		fmt.Sprintf("/v2/accounts/%s/balance", opts.AccountID), body)
+		fmt.Sprintf("/v2/accounts/%s/balance", opts.AccountID), nil)
 	if err != nil {
 		return 0, err
 	}

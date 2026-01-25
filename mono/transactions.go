@@ -60,11 +60,6 @@ func (t *TransactionService) All(ctx context.Context,
 	var resp []Transaction
 	var metadata TransactionMetadata
 
-	body, err := ToReader(NoopRequestBody{})
-	if err != nil {
-		return resp, metadata, nil
-	}
-
 	v, err := query.Values(opts)
 	if err != nil {
 		return resp, metadata, err
@@ -72,7 +67,7 @@ func (t *TransactionService) All(ctx context.Context,
 
 	req, err := t.client.newRequest(http.MethodGet,
 		fmt.Sprintf("/v2/customers/%s/transactions?%s", accountID, v.Encode()),
-		body)
+		nil)
 	if err != nil {
 		return resp, metadata, nil
 	}
@@ -104,14 +99,9 @@ func (t *TransactionService) Credits(ctx context.Context, accountID string) (
 
 	var resp InflowResponse
 
-	body, err := ToReader(NoopRequestBody{})
-	if err != nil {
-		return resp, nil
-	}
-
 	req, err := t.client.newRequest(http.MethodGet,
 		fmt.Sprintf("/v2/accounts/%s/credits", accountID),
-		body)
+		nil)
 	if err != nil {
 		return resp, nil
 	}
@@ -125,14 +115,9 @@ func (t *TransactionService) Debits(ctx context.Context, accountID string) (
 
 	var resp OutflowResponse
 
-	body, err := ToReader(NoopRequestBody{})
-	if err != nil {
-		return resp, nil
-	}
-
 	req, err := t.client.newRequest(http.MethodGet,
 		fmt.Sprintf("/v2/accounts/%s/debits", accountID),
-		body)
+		nil)
 	if err != nil {
 		return resp, nil
 	}

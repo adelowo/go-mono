@@ -35,14 +35,9 @@ func (c *CustomerService) Details(ctx context.Context,
 
 	var resp CustomerDetails
 
-	body, err := ToReader(NoopRequestBody{})
-	if err != nil {
-		return resp, err
-	}
-
 	req, err := c.client.newRequest(http.MethodGet,
 		fmt.Sprintf("/v2/customers/%s", accountID),
-		body)
+		nil)
 	if err != nil {
 		return resp, err
 	}

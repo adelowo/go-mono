@@ -99,6 +99,7 @@ func (c *Client) newRequest(method, resource string, body io.Reader) (*http.Requ
 	}
 
 	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Accept", "application/json")
 	req.Header.Set("User-Agent", c.userAgent)
 	req.Header.Set("mono-sec-key", c.apikey)
 
@@ -132,7 +133,6 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v any) (*Response, e
 	}
 
 	if resp.StatusCode > http.StatusCreated {
-
 		var s struct {
 			Message string `json:"message"`
 		}
