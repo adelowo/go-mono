@@ -126,13 +126,8 @@ func (a *CustomerService) Delete(ctx context.Context,
 		return errors.New("please provide a valid customerID")
 	}
 
-	body, err := ToReader(NoopRequestBody{})
-	if err != nil {
-		return err
-	}
-
 	req, err := a.client.newRequest(http.MethodDelete,
-		fmt.Sprintf("/customers/%s", customerID), body)
+		fmt.Sprintf("/customers/%s", customerID), nil)
 	if err != nil {
 		return err
 	}

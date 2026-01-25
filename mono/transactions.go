@@ -22,8 +22,8 @@ type TransactionType string
 
 type TransactionsOptions struct {
 	Paginate  bool            `url:"paginate,omitempty"`
-	End       string          `url:"end,omitempty"`
-	Start     string          `url:"start,omitempty"`
+	End       time.Time       `url:"-"`
+	Start     time.Time       `url:"-"`
 	Narration string          `url:"narration,omitempty"`
 	Type      TransactionType `url:"type,omitempty"`
 	Limit     int             `url:"limit,omitempty"`
@@ -63,6 +63,14 @@ func (t *TransactionService) All(ctx context.Context,
 	v, err := query.Values(opts)
 	if err != nil {
 		return resp, metadata, err
+	}
+
+	if !opts.Start.IsZero() {
+		v.Set("start", opts.Start.Format(DateFormat))
+	}
+
+	if !opts.End.IsZero() {
+		v.Set("end", opts.End.Format(DateFormat))
 	}
 
 	req, err := t.client.newRequest(http.MethodGet,

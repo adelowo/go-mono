@@ -28,10 +28,8 @@ type BaseMonoResponse struct {
 	Timestamp time.Time `json:"timestamp"`
 }
 
-type NoopRequestBody struct{}
-
 // ToReader converts any struct into a io#Reader that can be used
-func ToReader[T NoopRequestBody | any](t T) (io.Reader, error) {
+func ToReader[T any](t T) (io.Reader, error) {
 	b := bytes.NewBuffer(nil)
 
 	enc := json.NewEncoder(b)

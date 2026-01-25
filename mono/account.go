@@ -68,13 +68,8 @@ func (a *AccountService) Unlink(ctx context.Context,
 		return errors.New("please provide a valid accountID")
 	}
 
-	body, err := ToReader(NoopRequestBody{})
-	if err != nil {
-		return err
-	}
-
 	req, err := a.client.newRequest(http.MethodPost,
-		fmt.Sprintf("/v2/accounts/%s/unlink", accountID), body)
+		fmt.Sprintf("/v2/accounts/%s/unlink", accountID), nil)
 	if err != nil {
 		return err
 	}
@@ -141,17 +136,12 @@ func (a *AccountService) DataSync(ctx context.Context,
 		return resp, errors.New("please provide a valid accountID")
 	}
 
-	body, err := ToReader(NoopRequestBody{})
-	if err != nil {
-		return resp, err
-	}
-
 	path := fmt.Sprintf("/accounts/%s/sync", opts.AccountID)
 	if opts.AllowIncompleteStatement {
 		path += "?allow_incomplete_statement=true"
 	}
 
-	req, err := a.client.newRequest(http.MethodPost, path, body)
+	req, err := a.client.newRequest(http.MethodPost, path, nil)
 	if err != nil {
 		return resp, err
 	}

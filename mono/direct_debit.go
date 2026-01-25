@@ -189,13 +189,8 @@ func (d *DirectDebitService) Reinstate(ctx context.Context, mandateID string) er
 		return errors.New("please provide a valid mandate id")
 	}
 
-	body, err := ToReader(NoopRequestBody{})
-	if err != nil {
-		return err
-	}
-
 	req, err := d.client.newRequest(http.MethodPatch,
-		fmt.Sprintf("/v3/payments/mandates/%s/reinstate", mandateID), body)
+		fmt.Sprintf("/v3/payments/mandates/%s/reinstate", mandateID), nil)
 	if err != nil {
 		return err
 	}
@@ -210,13 +205,8 @@ func (d *DirectDebitService) Pause(ctx context.Context, mandateID string) error 
 		return errors.New("please provide a valid mandate id")
 	}
 
-	body, err := ToReader(NoopRequestBody{})
-	if err != nil {
-		return err
-	}
-
 	req, err := d.client.newRequest(http.MethodPatch,
-		fmt.Sprintf("/v3/payments/mandates/%s/pause", mandateID), body)
+		fmt.Sprintf("/v3/payments/mandates/%s/pause", mandateID), nil)
 	if err != nil {
 		return err
 	}
@@ -302,13 +292,8 @@ func (d *DirectDebitService) Balance(ctx context.Context,
 		return 0, errors.New("please provide a valid mandate id")
 	}
 
-	body, err := ToReader(NoopRequestBody{})
-	if err != nil {
-		return 0, err
-	}
-
 	req, err := d.client.newRequest(http.MethodPatch,
-		fmt.Sprintf("/v3/payments/mandates/%s/balance-inquiry/?amount=%d", mandateID, amount), body)
+		fmt.Sprintf("/v3/payments/mandates/%s/balance-inquiry/?amount=%d", mandateID, amount), nil)
 	if err != nil {
 		return 0, err
 	}
