@@ -27,6 +27,7 @@ type TransactionsOptions struct {
 	Narration string          `url:"narration,omitempty"`
 	Type      TransactionType `url:"type,omitempty"`
 	Limit     int             `url:"limit,omitempty"`
+	Page      string          `url:"page,omitempty"`
 	Realtime  bool            `url:"-"`
 }
 
