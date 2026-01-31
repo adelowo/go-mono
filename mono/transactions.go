@@ -74,7 +74,7 @@ func (t *TransactionService) All(ctx context.Context,
 	}
 
 	req, err := t.client.newRequest(http.MethodGet,
-		fmt.Sprintf("/v2/customers/%s/transactions?%s", accountID, v.Encode()),
+		fmt.Sprintf("/v2/accounts/%s/transactions?%s", accountID, v.Encode()),
 		nil)
 	if err != nil {
 		return resp, metadata, nil
